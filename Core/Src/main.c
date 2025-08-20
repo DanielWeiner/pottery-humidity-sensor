@@ -296,8 +296,14 @@ int main(void) {
 		bool		  buttonPressed = buttonState == GPIO_PIN_RESET;
 
 		// LED is turned on when the button is pressed, off when released
-		if (lastButtonState != buttonState)
+		if (lastButtonState != buttonState) {
 			HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, buttonPressed ? GPIO_PIN_SET : GPIO_PIN_RESET);
+			if (buttonPressed) {
+				lcd_backlight_on(&lcd1);
+			} else {
+				lcd_backlight_off(&lcd1);
+			}
+		}
 
 		lastButtonState = buttonState;
 
@@ -364,7 +370,6 @@ int main(void) {
 					wifiState = WIFI_STATE_SCANNING;
 				}
 				break;
-
 			case WIFI_STATE_CONNECT_NETWORK:
 				AccessPoint *ap = &wifiStateMachine.accessPoint;
 

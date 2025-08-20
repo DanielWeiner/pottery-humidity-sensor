@@ -17,6 +17,8 @@
 #define SNTP_SERVER_2 "1.us.pool.ntp.org"
 #define SNTP_SERVER_3 "2.us.pool.ntp.org"
 
+#define CRLF "\r\n"
+#define DOUBLE_CRLF "\r\n\r\n"
 #define AT_COMMAND_GMR "AT+GMR"
 #define AT_COMMAND_CWMODE "AT+CWMODE=1"
 #define AT_COMMAND_CWLAP "AT+CWLAP"

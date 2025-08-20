@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 
+#include "constants.h"
 #include "parser/parse.h"
 
 #define DECLARE_TOKEN(name, tok) \
@@ -15,9 +16,6 @@
 
 #define set_state_on_token(destState, tokenState, newState, ch) \
 	set_state_on_token_int((int *)(destState), (tokenState), (int)(newState), (ch))
-
-#define CRLF "\r\n"
-#define DOUBLE_CRLF (CRLF CRLF)
 
 typedef struct Token {
 	const size_t	  length;

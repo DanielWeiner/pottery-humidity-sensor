@@ -26,14 +26,14 @@ bool get_readings(uint16_t *temperature, uint16_t *humidity) {
 
 	// Checksum algorithm is provided by the datasheet and was generated to C by pycrc
 	if (!validate_sht31_crc(sensorData[0], sensorData[1], sensorData[2])) {
-		LOG("Temperature CRC error\r\n");
+		LOG("Temperature CRC error" CRLF);
 		if (temperature) *temperature = 0;
 		if (humidity) *humidity = 0;
 		return false;
 	}
 
 	if (!validate_sht31_crc(sensorData[3], sensorData[4], sensorData[5])) {
-		LOG("Humidity CRC error\r\n");
+		LOG("Humidity CRC error" CRLF);
 		if (temperature) *temperature = 0;
 		if (humidity) *humidity = 0;
 		return false;

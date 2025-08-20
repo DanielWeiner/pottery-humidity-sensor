@@ -19,14 +19,14 @@ static IpdResponse		ipdResponse;
 
 void http_on_header_byte(HttpResponse *response, char ch) {
 	if (response->headersDone) {
-		LOG("Status code: %d\r\n", response->status);
-		LOG("Content length: %u\r\n", response->contentLength);
+		LOG("Status code: %d" CRLF, response->status);
+		LOG("Content length: %u" CRLF, response->contentLength);
 	}
 }
 
 void http_on_body_byte(HttpResponse *response, char ch) {
 	if (response->bodyDone) {
-		LOG("Response done\r\n");
+		LOG("Response done" CRLF);
 	}
 }
 

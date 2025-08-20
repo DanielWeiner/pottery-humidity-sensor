@@ -18,13 +18,13 @@
 		"Host: " ENDPOINT_HOST CRLF                                   \
 		"Content-Type: text/plain" CRLF                               \
 		"User-Agent: PotteryHumiditySensor/0.1 (ESP8266; STM32)" CRLF \
-		"Content-Length: 12345" CRLF                                  \
-		"Connection: close" CRLF CRLF                                 \
+		"Content-Length: 2048" CRLF                                   \
+		"Connection: close" DOUBLE_CRLF                               \
 	)
 // clang-format on
 // maximum number of entries in a single batch.
 // comes out to 91 records at a total request length of 2040 bytes
-#define NUM_BATCH_ENTRIES ((2048 - MAX_HEADER_SIZE) / MEASUREMENT_STRING_SIZE)
+#define NUM_BATCH_ENTRIES ((RX_BUFFER_SIZE - MAX_HEADER_SIZE) / MEASUREMENT_STRING_SIZE)
 #define PAYLOAD_BUFFER_SIZE (BODY_SIZE(NUM_BATCH_ENTRIES) + MAX_HEADER_SIZE)
 
 void register_request_state_transitions(RequestStateMachine *requestStateMachine);
