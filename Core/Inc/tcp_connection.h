@@ -1,0 +1,4 @@
+#ifndef INC_TCP_CONNECTION_H_
+#define INC_TCP_CONNECTION_H_
+
+#endif /* INC_TCP_CONNECTION_H_ */

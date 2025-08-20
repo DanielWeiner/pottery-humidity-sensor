@@ -1,0 +1,43 @@
+# STM32CubeIDE and CMake build artifacts
+build/
+*.o
+*.d
+*.elf
+*.map
+*.bin
+*.hex
+*.lst
+*.srec
+*.log
+*.dep
+*.su
+*.a
+*.out
+*.pyc
+*.pyo
+*.swp
+*.swo
+*.bak
+*.tmp
+*.DS_Store
+*.user
+*.launch
+*.uvopt*
+*.uvproj*
+*.cproject
+*.project
+*.settings/
+*.idea/
+*.vscode/
+# CubeMX generated files
+*.ioc-backup
+# Python virtualenv
+venv/
+.env/
+# Editor/OS files
+*.sublime-workspace
+*.sublime-project
+*.code-workspace
+Core/Inc/constants_private.h
+# Submodules (if you want to ignore changes)
+# Drivers/i2c-lcd-stm32/.git

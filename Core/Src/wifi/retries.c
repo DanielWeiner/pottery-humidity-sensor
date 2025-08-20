@@ -1,0 +1,29 @@
+#include "wifi/retries.h"
+
+#include "retry.h"
+
+#define WIFI_RETRY_DELAY 100
+#define WIFI_MAX_RETRIES 5
+
+static RetryState wifiRetryState = RETRY_STATE(NULL, WIFI_STATE_RESET, WIFI_MAX_RETRIES, WIFI_RETRY_DELAY);
+
+static const MachineStateRetry retries[] = {
+	{&wifiRetryState, WIFI_STATE_RESET, WIFI_STATE_RESETTING_ERROR, WIFI_STATE_RESETTING_SUCCESS},
+	{&wifiRetryState, WIFI_STATE_GET_FIRMWARE_INFO, WIFI_STATE_FIRMWARE_INFO_ERROR, WIFI_STATE_FIRMWARE_INFO_SUCCESS},
+	{&wifiRetryState, WIFI_STATE_ENABLE_WIFI, WIFI_STATE_ENABLING_ERROR, WIFI_STATE_ENABLING_SUCCESS},
+	{&wifiRetryState, WIFI_STATE_SCAN_NETWORKS, WIFI_STATE_SCANNING_ERROR, WIFI_STATE_SCANNING_DONE},
+	{&wifiRetryState, WIFI_STATE_CONNECT_NETWORK, WIFI_STATE_CONNECTING_ERROR, WIFI_STATE_CONNECTED},
+	{&wifiRetryState, WIFI_STATE_SET_CONNECTION_MODE, WIFI_STATE_CONNECTION_MODE_ERROR, WIFI_STATE_CONNECTION_MODE_SET},
+	{&wifiRetryState, WIFI_STATE_CONFIGURE_SNTP, WIFI_STATE_SNTP_CONFIGURATION_ERROR,
+	 WIFI_STATE_SNTP_CONFIGURATION_DONE},
+	{&wifiRetryState, WIFI_STATE_UPDATE_SNTP_TIME, WIFI_STATE_SNTP_UPDATE_ERROR, WIFI_STATE_SNTP_UPDATE_DONE},
+	{&wifiRetryState, WIFI_STATE_UPDATE_SNTP_TIME, WIFI_STATE_SNTP_UPDATE_ERROR, WIFI_STATE_SNTP_QUERY_RETRY},
+	{&wifiRetryState, WIFI_STATE_GET_TIME, WIFI_STATE_TIME_ERROR, WIFI_STATE_TIME_RECEIVED}};
+
+void register_wifi_state_retries(WifiStateMachine *wifiStateMachine) {
+	wifiRetryState.currentState = wifiStateMachine->stateMachine->currentState;
+
+	for (size_t i = 0; i < sizeof(retries) / sizeof(MachineStateRetry); i++) {
+		register_machine_state_retry_config(wifiStateMachine->stateMachine, &retries[i]);
+	}
+}
