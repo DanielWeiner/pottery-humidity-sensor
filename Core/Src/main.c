@@ -422,6 +422,10 @@ int main(void) {
 			requestState = REQUEST_STATE_DISABLED;
 		}
 
+		if (requestState == REQUEST_STATE_DISABLED) {
+			continue;
+		}
+
 		process_machine_state(&requestStateMachineBase, receivedByte, now);
 
 		switch (requestState) {
