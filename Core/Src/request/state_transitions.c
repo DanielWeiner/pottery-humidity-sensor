@@ -57,7 +57,7 @@ static size_t set_request_contents(RequestStateMachine *stateMachine, size_t num
 		"Content-Type: text/plain" CRLF
 		"User-Agent: PotteryHumiditySensor/0.1 (ESP8266; STM32)" CRLF
 		"Content-Length: %u" CRLF
-		"Connection: close" CRLF CRLF;
+		"Connection: close" DOUBLE_CRLF;
 	// clang-format on
 
 	// Calculate and set the value of the Content-Length header
@@ -76,8 +76,8 @@ static size_t set_request_contents(RequestStateMachine *stateMachine, size_t num
 		LOG("Error building request body" CRLF);
 		return 0;
 	}
-	headersSize += bodySize;
-	return headersSize;
+
+	return headersSize + bodySize;
 }
 
 static size_t calculate_content_length(size_t numMeasurements) {
@@ -123,7 +123,7 @@ static size_t build_measurements_body(RequestStateMachine *stateMachine, size_t 
 		charsWritten += measurementSize;
 	}
 
-	return charsWritten;
+	return charsWritten - headersSize;	// Return the size of the body only
 }
 
 static int prepare_for_request(int state, uint32_t now, void *userData) {

@@ -295,9 +295,8 @@ int main(void) {
 		GPIO_PinState buttonState = HAL_GPIO_ReadPin(USER_TOGGLE_GPIO_Port, USER_TOGGLE_Pin);
 		bool		  buttonPressed = buttonState == GPIO_PIN_RESET;
 
-		// LED is turned on when the button is pressed, off when released
+		// LCD backlight is turned on when the button is pressed, off when released
 		if (lastButtonState != buttonState) {
-			HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, buttonPressed ? GPIO_PIN_SET : GPIO_PIN_RESET);
 			if (buttonPressed) {
 				lcd_backlight_on(&lcd1);
 			} else {
@@ -327,8 +326,6 @@ int main(void) {
 
 			// Turn off the status LED
 			if (buttonPressed) HAL_GPIO_WritePin(STATUS_LED_OUT_GPIO_Port, STATUS_LED_OUT_Pin, GPIO_PIN_RESET);
-
-			continue;
 		}
 
 		// Get the next byte from the ESP8266 ring buffer, if any.
