@@ -334,6 +334,7 @@ int main(void) {
 		// Get the next byte from the ESP8266 ring buffer, if any.
 		char receivedByte = get_next_esp8266_byte();
 		process_machine_state(&wifiStateMachineBase, receivedByte, now);
+		process_machine_state(&requestStateMachineBase, receivedByte, now);
 
 		switch (wifiState) {
 			case WIFI_STATE_RESET:
@@ -415,18 +416,14 @@ int main(void) {
 		}
 
 		if (wifiState == WIFI_STATE_WIFI_READY && requestState == REQUEST_STATE_DISABLED) {
+			LOG("Enabling HTTP requests" CRLF);
 			requestState = REQUEST_STATE_ENABLED;
 		}
 
 		if (wifiState != WIFI_STATE_WIFI_READY && requestState != REQUEST_STATE_DISABLED) {
+			LOG("Disabling HTTP requests" CRLF);
 			requestState = REQUEST_STATE_DISABLED;
 		}
-
-		if (requestState == REQUEST_STATE_DISABLED) {
-			continue;
-		}
-
-		process_machine_state(&requestStateMachineBase, receivedByte, now);
 
 		switch (requestState) {
 			case REQUEST_STATE_SEND_REQUEST:
@@ -451,6 +448,7 @@ int main(void) {
 		if (requestState != REQUEST_STATE_DISABLED &&
 			now - requestStateMachine.lastHttpRequest > WIFI_WATCHDOG_TIMEOUT_MS) {
 			LOG("HTTP request watchdog timeout" CRLF);
+			requestStateMachine.lastHttpRequest = now;
 			requestState = REQUEST_STATE_DISABLED;	// fail the request on watchdog timeout
 			wifiState = WIFI_STATE_RESET;			// reset the wifi state on request watchdog timeout
 		}
